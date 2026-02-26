@@ -4,6 +4,10 @@
 
 `odm` is a small Bun CLI to manage `opencode serve` as a background service.
 
+## Latest Update
+
+- `536b768`: Added support for `OPENCODE_PORT` as the default port source when `--port`/`-p` is not set.
+
 ## Setup
 
 1) Clone the repo:
@@ -39,6 +43,12 @@ Start on default port (`45023`):
 odm start
 ```
 
+Start using `OPENCODE_PORT` when `--port` is not provided:
+
+```bash
+OPENCODE_PORT=5555 odm start
+```
+
 Start on custom port:
 
 ```bash
@@ -46,6 +56,12 @@ odm start --port 5555
 # or
 odm start -p 5555
 ```
+
+Port resolution order:
+
+1) `--port` / `-p`
+2) `OPENCODE_PORT`
+3) Default `45023`
 
 Stop service:
 
