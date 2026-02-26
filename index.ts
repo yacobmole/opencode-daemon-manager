@@ -55,7 +55,7 @@ function usage(): void {
   odm status
 
 Options:
-  -p, --port  Port for opencode serve (default: ${PORT})
+  -p, --port  Port for opencode serve (default: OPENCODE_PORT or ${PORT})
 
 State directory:
   ${STATE_DIR}
@@ -77,7 +77,7 @@ function parseCommand(raw?: string): Command {
 }
 
 function parsePort(args: string[]): number {
-  let port = PORT;
+  let port: number | null = null;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -104,6 +104,15 @@ function parsePort(args: string[]): number {
     console.error(`Unknown argument: ${arg}`);
     usage();
     process.exit(1);
+  }
+
+  if (port === null) {
+    const envPort = process.env.OPENCODE_PORT;
+    if (envPort && envPort.trim().length > 0) {
+      port = Number.parseInt(envPort, 10);
+    } else {
+      port = PORT;
+    }
   }
 
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
