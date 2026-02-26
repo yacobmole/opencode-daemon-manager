@@ -7,7 +7,7 @@ import { resolve } from "node:path";
 
 type Command = "start" | "stop" | "status" | "help";
 
-const DEFAULT_PORT = 4444;
+const PORT = 45023;
 const STATE_DIR = getStateDir();
 const PID_FILE = resolve(STATE_DIR, "opencode.pid");
 const META_FILE = resolve(STATE_DIR, "opencode.json");
@@ -50,7 +50,7 @@ function usage(): void {
   bun run index.ts status
 
 Options:
-  -p, --port  Port for opencode serve (default: ${DEFAULT_PORT})
+  -p, --port  Port for opencode serve (default: ${PORT})
 
 State directory:
   ${STATE_DIR}
@@ -72,7 +72,7 @@ function parseCommand(raw?: string): Command {
 }
 
 function parsePort(args: string[]): number {
-  let port = DEFAULT_PORT;
+  let port = PORT;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -146,7 +146,7 @@ async function readState(): Promise<DaemonState | null> {
     return null;
   }
 
-  let port = DEFAULT_PORT;
+  let port = PORT;
   let startedAt = "unknown";
 
   if (existsSync(META_FILE)) {
