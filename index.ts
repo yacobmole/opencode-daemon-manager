@@ -26,7 +26,12 @@ function getStateDir(): string {
   }
 
   if (process.platform === "darwin") {
-    return resolve(home, "Library", "Application Support", "opencode-daemon-manager");
+    return resolve(
+      home,
+      "Library",
+      "Application Support",
+      "opencode-daemon-manager",
+    );
   }
 
   const xdgStateHome = process.env.XDG_STATE_HOME;
@@ -45,9 +50,9 @@ type DaemonState = {
 
 function usage(): void {
   console.log(`Usage:
-  bun run index.ts start [--port <number>]
-  bun run index.ts stop
-  bun run index.ts status
+  odm start [--port <number>]
+  odm stop
+  odm status
 
 Options:
   -p, --port  Port for opencode serve (default: ${PORT})
@@ -102,7 +107,9 @@ function parsePort(args: string[]): number {
   }
 
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
-    console.error(`Invalid port: ${port}. Expected integer between 1 and 65535.`);
+    console.error(
+      `Invalid port: ${port}. Expected integer between 1 and 65535.`,
+    );
     process.exit(1);
   }
 
@@ -151,7 +158,9 @@ async function readState(): Promise<DaemonState | null> {
 
   if (existsSync(META_FILE)) {
     try {
-      const meta = JSON.parse(await readFile(META_FILE, "utf8")) as Partial<DaemonState>;
+      const meta = JSON.parse(
+        await readFile(META_FILE, "utf8"),
+      ) as Partial<DaemonState>;
       if (typeof meta.port === "number") {
         port = meta.port;
       }
@@ -270,7 +279,9 @@ async function main(): Promise<void> {
   }
 
   if (extraArgs.length > 0) {
-    console.error(`Unexpected arguments for '${command}': ${extraArgs.join(" ")}`);
+    console.error(
+      `Unexpected arguments for '${command}': ${extraArgs.join(" ")}`,
+    );
     usage();
     process.exit(1);
   }
@@ -284,6 +295,9 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  console.error("Unexpected error:", error instanceof Error ? error.message : error);
+  console.error(
+    "Unexpected error:",
+    error instanceof Error ? error.message : error,
+  );
   process.exit(1);
 });
