@@ -1,53 +1,74 @@
 # opencode-daemon-manager
 
-Simple Bun CLI to start/stop a background `opencode serve` process.
+> Warning: This project is completely vibe-coded with OpenAI GPT 5.3 Codex.
 
-## Install
+`odm` is a small Bun CLI to manage `opencode serve` as a background service.
+
+## Setup
+
+1) Clone the repo:
+
+```bash
+git clone <your-repo-url>
+cd opencode-daemon-manager
+```
+
+2) Install dependencies:
 
 ```bash
 bun install
 ```
 
-## Usage
-
-Start service on default port (`4444`):
+3) Link the CLI globally:
 
 ```bash
-bun run index.ts start
+bun link
 ```
 
-Start service on a custom port:
+4) Verify install:
 
 ```bash
-bun run index.ts start --port 5555
+odm --help
+```
+
+## Usage
+
+Start on default port (`4444`):
+
+```bash
+odm start
+```
+
+Start on custom port:
+
+```bash
+odm start --port 5555
 # or
-bun run index.ts start -p 5555
+odm start -p 5555
 ```
 
 Stop service:
 
 ```bash
-bun run index.ts stop
+odm stop
 ```
 
 Check status:
 
 ```bash
-bun run index.ts status
+odm status
 ```
 
-You can also use scripts:
-
-```bash
-bun run start -- --port 5555
-bun run stop
-bun run status
-```
+## State Directory
 
 Runtime state is stored in an OS-specific location:
 
-- Linux: `$XDG_STATE_HOME/opencode-daemon-manager` (or `~/.local/state/opencode-daemon-manager`)
+- Linux: `$XDG_STATE_HOME/opencode-daemon-manager` (fallback: `~/.local/state/opencode-daemon-manager`)
 - macOS: `~/Library/Application Support/opencode-daemon-manager`
-- Windows: `%LOCALAPPDATA%\\opencode-daemon-manager` (fallback `%APPDATA%`)
+- Windows: `%LOCALAPPDATA%\\opencode-daemon-manager` (fallback: `%APPDATA%`)
 
-You can override this with `OPENCODE_DAEMON_STATE_DIR`.
+Override this location with:
+
+```bash
+OPENCODE_DAEMON_STATE_DIR=/custom/path odm status
+```
